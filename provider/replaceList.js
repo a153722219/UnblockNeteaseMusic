@@ -14,7 +14,12 @@ module.exports = {
 	"865683581":{
 		name:"黑凤梨",
 		url:"http://vip.baidu190.com/uploads/2017/2017122147188630813777d144108936f1c15e.mp3"
+	},
+	"523658941":{
+		name:"小公主",
+		url:"http://vip.baidu190.com/src110.php?uid=201712dbde0fc89aed0b1f0b2afa3ed3f7a6a4.mp3"
 	}
+
 }
 
 
