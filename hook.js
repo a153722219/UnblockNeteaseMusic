@@ -4,7 +4,7 @@ const crypto = require('./crypto')
 const request = require('./request')
 const match = require('./provider/match')
 const querystring = require('querystring')
-
+const replaceList = require('./provider/replaceList')
 const hook = {
 	request: {
 		before: () => {},
@@ -166,8 +166,8 @@ hook.request.after = ctx => {
 				return tryMatch(ctx)
 		})
 		.then(() => {
+			
 			['transfer-encoding', 'content-encoding', 'content-length'].filter(key => key in proxyRes.headers).forEach(key => delete proxyRes.headers[key])
-
 			const inject = (key, value) => {
 				if(typeof(value) === 'object' && value != null){
 					if('fee' in value) value['fee'] = 0
@@ -183,7 +183,7 @@ hook.request.after = ctx => {
 
 			let body = JSON.stringify(netease.jsonBody, inject)
 			body = body.replace(/([^\\]"\s*:\s*)"(\d{16,})L"(\s*[}|,])/g, '$1$2$3') // for js precision
-			proxyRes.body = (netease.encrypted ? crypto.eapi.encrypt(Buffer.from(body)) : body)
+			proxyRes.body = (netease.encrypted ? crypto.eapi.encrypt(Buffer.from(body)) : body)	
 		})
 		.catch(error => error ? console.log(error, ctx.req.url) : null)
 	}
@@ -228,6 +228,7 @@ hook.negotiate.before = ctx => {
 }
 
 const pretendPlay = ctx => {
+	
 	const req = ctx.req
 	const netease = ctx.netease
 	let turn = 'http://music.163.com/api/song/enhance/player/url'
@@ -290,10 +291,25 @@ const tryMatch = ctx => {
 	const netease = ctx.netease
 	const jsonBody = netease.jsonBody
 	let tasks = [], target = 0
-
+	console.log("trymatch")
 	const inject = item => {
+		console.log("target:"+target)
+		console.log(JSON.stringify(item))
+		//替换官方音乐
+		if(item){
+			const id = item.id;
+			console.log("id:"+id);
+			if(replaceList[id]){
+				item.needReplace = true;
+			}
+		}
+		
+		
 		item.flag = 0
-		if((item.code != 200 || item.freeTrialInfo) && (target == 0 || item.id == target)){
+		if(((item.code != 200 || item.freeTrialInfo) && (target == 0 || item.id == target)) || item.needReplace){
+			if(item.needReplace){
+				console.log("needReplace"+item.id)
+			}
 			return match(item.id)
 			.then(song => {
 				item.type = song.br === 999000 ? 'flac' : 'mp3'
@@ -303,6 +319,7 @@ const tryMatch = ctx => {
 				item.size = song.size
 				item.code = 200
 				item.freeTrialInfo = null
+				console.log(JSON.stringify(item))
 				return song
 			})
 			.then(song => {
@@ -330,20 +347,25 @@ const tryMatch = ctx => {
 			.catch(() => {})
 		}
 		else if(item.code == 200 && netease.web){
+			
 			item.url = item.url.replace(/(m\d+?)(?!c)\.music\.126\.net/, '$1c.music.126.net')
+		
 		}
 	}
 
 	if(!jsonBody.data instanceof Array){
 		tasks = [inject(jsonBody.data)]
+	
 	}
 	else if(netease.path.includes('download')){
 		jsonBody.data = jsonBody.data[0]
 		tasks = [inject(jsonBody.data)]
+
 	}
 	else{
 		target = netease.web ? 0 : parseInt(((netease.param.ids instanceof Array ? netease.param.ids : JSON.parse(netease.param.ids))[0] || 0).toString().replace('_0', '')) // reduce time cost
 		tasks = jsonBody.data.map(item => inject(item))
+
 	}
 	return Promise.all(tasks).catch(() => {})
 }

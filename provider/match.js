@@ -23,17 +23,18 @@ const match = (id, source) => {
 	})
 	.then(urls => {
 		urls = urls.filter(url => url)
+		if(replaceList[meta.id]){
+			console.log("replace1:"+meta.name);
+			urls[0] = replaceList[meta.id].url;
+		}
+		
 		return Promise.all(urls.map(url => check(url)))
 	})
 	.then(songs => {
 		songs = songs.filter(song => song.url)
 		if(!songs.length) return Promise.reject()
 		console.log(`[${meta.id}] ${meta.name}\n${songs[0].url}`)
-		//hook custom music url
-		if(replaceList[meta.id]){
-			console.log("replace:"+meta.name);
-			songs[0].url=replaceList[meta.id].url;
-		}
+		
 		return songs[0]
 	})
 }

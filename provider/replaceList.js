@@ -6,5 +6,15 @@ module.exports = {
 	"525240052":{
 		name:"家明",
 		url:"http://vip.baidu190.com/uploads/2017/20171286d15d47a34241373e8025b780ec2fa8.mp3"
+	},
+	"413829859":{
+		name:"童话镇",
+		url:"http://vip.baidu190.com/uploads/2017/20171204617acb4a9d1cd0423e0a9eeb43c643.mp3"
+	},
+	"865683581":{
+		name:"黑凤梨",
+		url:"http://vip.baidu190.com/uploads/2017/2017122147188630813777d144108936f1c15e.mp3"
 	}
 }
+
+
