@@ -24,16 +24,30 @@ const hook = {
 
 hook.target.host = [
 	'music.163.com',
-	'interface.music.163.com',
-	'interface3.music.163.com',
-	'apm.music.163.com',
-	'apm3.music.163.com',
-	// 'mam.netease.com',
-	// 'api.iplay.163.com', // look living
-	// 'ac.dun.163yun.com',
-	// 'crash.163.com',
-	// 'clientlog.music.163.com',
-	// 'clientlog3.music.163.com'
+    'interface.music.163.com',
+    'interface3.music.163.com',
+    'api.iplay.163.com',
+    'apm.music.163.com',
+    'apm3.music.163.com',
+    '39.105.63.80',
+    '45.254.48.1',
+    '47.100.127.239',
+    '59.111.160.195',
+    '59.111.160.197',
+    '59.111.181.35',
+    '59.111.181.38',
+    '59.111.181.60',
+    '101.71.154.241',
+    '103.126.92.132',
+    '103.126.92.133',
+    '112.13.119.17',
+    '112.13.122.1',
+    '115.236.118.33',
+    '115.236.121.1',
+    '118.24.63.156',
+    '193.112.159.225',
+    '223.252.199.66',
+    '223.252.199.67'
 ]
 
 hook.target.path = [

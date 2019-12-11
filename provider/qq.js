@@ -5,7 +5,7 @@ const request = require('../request')
 let headers = {
 	'origin': 'http://y.qq.com/',
 	'referer': 'http://y.qq.com/',
-	'cookie': null // uin=; qm_keyst=
+	'cookie':  'uin=437816510; qm_keyst=Q_H_L_2SFtlt50emyj6dXRif_Hv0SJMrS5XTMaPWqh4HeYXmUbf4LXK5tWrWE9iFgi6n7' // uin=; qm_keyst=
 }
 
 const name = id => [headers.cookie ? 'M800' : 'M500', '.mp3'].join(id)
